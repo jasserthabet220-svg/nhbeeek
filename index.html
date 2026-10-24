@@ -1,0 +1,372 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>For Chahoudy</title>
+  <style>
+    * { box-sizing: border-box; }
+
+    body {
+      margin: 0;
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-family: "Georgia", serif;
+      background:
+        radial-gradient(circle at top, #ffd9e8 0%, #f8c3d7 18%, #f6dfe9 35%, #f7e7f1 100%);
+      color: #5b1e36;
+      overflow-x: hidden;
+    }
+
+    .scene {
+      position: relative;
+      width: min(92vw, 950px);
+      min-height: 760px;
+      background: rgba(255, 255, 255, 0.18);
+      border: 1px solid rgba(125, 47, 75, 0.2);
+      border-radius: 32px;
+      box-shadow: 0 25px 80px rgba(117, 39, 70, 0.18);
+      backdrop-filter: blur(8px);
+      overflow: hidden;
+      padding: 60px 40px 30px;
+      text-align: center;
+    }
+
+    .petals, .lilies {
+      position: absolute;
+      inset: 0;
+      pointer-events: none;
+    }
+
+    .petals span, .lilies span {
+      position: absolute;
+      display: block;
+      opacity: 0.8;
+      color: #c53767;
+      filter: drop-shadow(0 0 8px rgba(197,55,103,0.15));
+    }
+
+    .petals span {
+      font-size: 28px;
+      animation: floatUp 12s linear infinite;
+    }
+
+    .lilies span {
+      font-size: 42px;
+      color: #d8a7c3;
+    }
+
+    @keyframes floatUp {
+      0% { transform: translateY(30px) scale(0.8); opacity: 0; }
+      10% { opacity: 0.8; }
+      100% { transform: translateY(-710px) scale(1.1); opacity: 0; }
+    }
+
+    .content {
+      position: relative;
+      z-index: 2;
+    }
+
+    .tiny-tag {
+      font-size: 1.05rem;
+      letter-spacing: 0.24em;
+      text-transform: uppercase;
+      color: #8d4968;
+      margin-bottom: 18px;
+    }
+
+    h1 {
+      font-size: clamp(2.8rem, 6vw, 6rem);
+      line-height: 1;
+      margin: 0;
+      color: #b5335e;
+      text-shadow: 0 4px 20px rgba(181, 51, 94, 0.16);
+    }
+
+    .name {
+      display: block;
+      font-style: italic;
+      color: #d63d76;
+    }
+
+    .subtitle {
+      margin: 22px auto 0;
+      max-width: 700px;
+      font-size: clamp(1.2rem, 2vw, 2.1rem);
+      line-height: 1.6;
+      color: #742b4e;
+      font-weight: 500;
+    }
+
+    .heart {
+      font-size: 2.8rem;
+      margin: 20px 0;
+      color: #d93b6b;
+      animation: pulse 1.8s ease-in-out infinite;
+    }
+
+    @keyframes pulse {
+      0%, 100% { transform: scale(1); }
+      50% { transform: scale(1.18); }
+    }
+
+    .quote {
+      margin: 30px auto 20px;
+      max-width: 760px;
+      padding: 26px 24px;
+      border-radius: 22px;
+      background: rgba(255,255,255,0.26);
+      border: 1px solid rgba(148, 70, 103, 0.2);
+      box-shadow: inset 0 0 18px rgba(255,255,255,0.1);
+    }
+
+    .quote p {
+      margin: 0;
+      font-size: clamp(1.2rem, 2vw, 2.1rem);
+      line-height: 1.8;
+      color: #62233f;
+      direction: rtl;
+      font-weight: 600;
+    }
+
+    .buttons {
+      position: relative;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      gap: 20px;
+      margin-top: 30px;
+      min-height: 90px;
+      z-index: 5;
+    }
+
+    .btn {
+      border: none;
+      border-radius: 999px;
+      padding: 18px 30px;
+      font-size: 1.08rem;
+      font-weight: bold;
+      cursor: pointer;
+      transition: all 0.2s ease;
+      box-shadow: 0 12px 28px rgba(134, 40, 74, 0.18);
+    }
+
+    .yes-btn {
+      background: linear-gradient(135deg, #d83d6e, #b22c58);
+      color: white;
+    }
+
+    .yes-btn:hover {
+      transform: translateY(-2px) scale(1.03);
+    }
+
+    .no-btn {
+      position: absolute;
+      right: 50%;
+      transform: translateX(50%);
+      background: linear-gradient(135deg, #f1d2dd, #e9a9bf);
+      color: #5b1e36;
+      border: 1px solid rgba(118, 31, 58, 0.3);
+    }
+
+    .letter {
+      display: none;
+      max-width: 760px;
+      margin: 24px auto 0;
+      background: rgba(255,255,255,0.35);
+      border: 1px solid rgba(155, 66, 103, 0.25);
+      border-radius: 24px;
+      padding: 28px 24px;
+      box-shadow: inset 0 0 18px rgba(255,255,255,0.18);
+      text-align: left;
+      color: #5e213b;
+      animation: fadeIn 1s ease;
+    }
+
+    .letter.show {
+      display: block;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(18px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    .letter h2 {
+      margin: 0 0 20px;
+      text-align: center;
+      font-size: clamp(1.5rem, 2vw, 2.4rem);
+      color: #b0335b;
+    }
+
+    .letter p {
+      margin: 0 0 16px;
+      line-height: 1.9;
+      font-size: clamp(1.05rem, 1.5vw, 1.4rem);
+    }
+
+    .letter .sign {
+      margin-top: 20px;
+      text-align: right;
+      font-weight: bold;
+      color: #7f2d4d;
+    }
+
+    .message {
+      margin-top: 18px;
+      font-size: 1.1rem;
+      color: #7b2b4d;
+      min-height: 30px;
+      font-weight: bold;
+    }
+
+    @media (max-width: 700px) {
+      .scene {
+        min-height: 680px;
+        padding: 50px 22px 20px;
+      }
+
+      .quote {
+        padding: 20px 16px;
+      }
+
+      .btn {
+        padding: 15px 22px;
+        font-size: 1rem;
+      }
+
+      .letter {
+        padding: 20px 16px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="scene">
+    <div class="petals" aria-hidden="true">
+      <span style="left:8%; top:24%; animation-delay:0s;">❀</span>
+      <span style="left:18%; top:16%; animation-delay:2s;">✿</span>
+      <span style="left:30%; top:28%; animation-delay:4s;">❀</span>
+      <span style="left:42%; top:12%; animation-delay:1s;">✾</span>
+      <span style="left:54%; top:18%; animation-delay:3s;">❀</span>
+      <span style="left:68%; top:20%; animation-delay:5s;">✿</span>
+      <span style="left:80%; top:15%; animation-delay:2.5s;">❀</span>
+      <span style="left:90%; top:26%; animation-delay:6s;">✾</span>
+      <span style="left:12%; top:40%; animation-delay:3.5s;">❀</span>
+      <span style="left:70%; top:42%; animation-delay:4.5s;">✿</span>
+      <span style="left:50%; top:38%; animation-delay:7s;">❀</span>
+      <span style="left:86%; top:44%; animation-delay:1.5s;">✾</span>
+    </div>
+
+    <div class="lilies" aria-hidden="true">
+      <span style="left:6%; bottom:8%;">🪷</span>
+      <span style="left:18%; bottom:5%;">🪷</span>
+      <span style="left:72%; bottom:6%;">🪷</span>
+      <span style="right:8%; bottom:10%;">🪷</span>
+    </div>
+
+    <div class="content">
+      <div class="tiny-tag">My forever</div>
+
+      <h1>
+        Would you be
+        <span class="name">my last love forever?</span>
+      </h1>
+
+      <div class="subtitle">
+        For the girl who makes my heart bloom like roses, and my soul feel at peace like lilies in spring — <strong>Chahoudy</strong>
+      </div>
+
+      <div class="heart">♥</div>
+
+      <div class="quote">
+        <p>
+          أقول أحبك يا قمري آهٍ لو كان بإمكاني فأنا لا أملك في الدنيا إلا عينيك وأحزاني
+        </p>
+      </div>
+
+      <div class="buttons">
+        <button class="btn yes-btn" id="yesBtn">Yes, I would</button>
+        <button class="btn no-btn" id="noBtn">No</button>
+      </div>
+
+      <div class="message" id="message"></div>
+
+      <div class="letter" id="loveLetter">
+        <h2>My Dearest Chahoudy</h2>
+
+        <p>
+          My love, every time I think of you, my heart feels warmer, softer, and more alive.
+          You are not just a beautiful presence in my life; you are the calm in my storms,
+          the smile in my silence, and the light I want to keep close forever.
+        </p>
+
+        <p>
+          I want to be the man who makes you happy in every season, who listens to your heart,
+          who protects your peace, and who loves you not only in the good days but in every
+          moment of life. You are my favorite dream, my sweetest thought, and my greatest blessing.
+        </p>
+
+        <p>
+          If I could choose forever, I would choose you. If I could hold on to one beautiful thing
+          in this world, it would be your love. And if I could promise one thing, it would be this:
+          I will love you with all my heart, with all my soul, and with all the time I have left.
+        </p>
+
+        <p>
+          You are my rose, my lily, my home, and my forever. I love you, Chahoudy, more than words
+          can say, more than time can measure, and more than my heart can hide.
+        </p>
+
+        <p class="sign">Forever yours, with all my love.</p>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    const yesBtn = document.getElementById("yesBtn");
+    const noBtn = document.getElementById("noBtn");
+    const message = document.getElementById("message");
+    const loveLetter = document.getElementById("loveLetter");
+
+    yesBtn.addEventListener("click", function () {
+      message.textContent = "You just made my whole world bloom 💖";
+      loveLetter.classList.add("show");
+      yesBtn.textContent = "Yes, forever 💞";
+      noBtn.style.display = "none";
+    });
+
+    function moveNoButton() {
+      const box = document.querySelector(".buttons");
+      const boxRect = box.getBoundingClientRect();
+      const btnRect = noBtn.getBoundingClientRect();
+
+      const maxX = boxRect.width - btnRect.width - 30;
+      const maxY = boxRect.height - btnRect.height - 10;
+
+      const randomX = Math.random() * maxX;
+      const randomY = Math.random() * maxY;
+
+      noBtn.style.left = randomX + "px";
+      noBtn.style.top = randomY + "px";
+      noBtn.style.right = "auto";
+      noBtn.style.transform = "none";
+    }
+
+    noBtn.addEventListener("mouseenter", moveNoButton);
+    noBtn.addEventListener("click", function (e) {
+      e.preventDefault();
+      moveNoButton();
+      message.textContent = "Nice try 😄 ... the answer is still yes";
+    });
+
+    noBtn.addEventListener("touchstart", function (e) {
+      e.preventDefault();
+      moveNoButton();
+      message.textContent = "No way, you are stuck with me 😌";
+    });
+  </script>
+</body>
+</html>
